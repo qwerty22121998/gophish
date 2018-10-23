@@ -94,7 +94,12 @@ var statuses = {
     "Campaign Created": {
         label: "label-success",
         icon: "fa-rocket"
-    }
+    },
+    "Attachment Clicked": {
+        color: "red",
+        label: "label-success",
+        icon: "fa-rocket"
+    },
 }
 
 var statusMapping = {
@@ -103,6 +108,7 @@ var statusMapping = {
     "Clicked Link": "clicked",
     "Submitted Data": "submitted_data",
     "Email Reported": "reported",
+    "Attachment Clicked": "attachment_clicked"
 }
 
 // This is an underwhelming attempt at an enum
@@ -111,7 +117,7 @@ var progressListing = [
     "Email Sent",
     "Email Opened",
     "Clicked Link",
-    "Submitted Data"
+    "Submitted Data",
 ]
 
 var campaign = {}
@@ -286,10 +292,10 @@ function replay(event_idx) {
 /**
  * Returns an HTML string that displays the OS and browser that clicked the link
  * or submitted credentials.
- * 
+ *
  * @param {object} event_details - The "details" parameter for a campaign
  *  timeline event
- * 
+ *
  */
 var renderDevice = function (event_details) {
     var ua = UAParser(details.browser['user-agent'])
@@ -518,8 +524,7 @@ var renderPieChart = function (chartopts) {
                         pie = chart.series[0],
                         left = chart.plotLeft + pie.center[0],
                         top = chart.plotTop + pie.center[1];
-                    this.innerText = rend.text(chartopts['data'][0].y, left, top).
-                    attr({
+                    this.innerText = rend.text(chartopts['data'][0].y, left, top).attr({
                         'text-anchor': 'middle',
                         'font-size': '24px',
                         'font-weight': 'bold',
@@ -600,8 +605,8 @@ var updateMap = function (results) {
 
 /**
  * Creates a status label for use in the results datatable
- * @param {string} status 
- * @param {moment(datetime)} send_date 
+ * @param {string} status
+ * @param {moment(datetime)} send_date
  */
 function createStatusLabel(status, send_date) {
     var label = statuses[status].label || "label-default";
@@ -684,6 +689,7 @@ function poll() {
                     y: campaign.results.length - count
                 })
                 var chart = $("#" + statusMapping[status] + "_chart").highcharts()
+                console.log("#" + statusMapping[status] + "_chart")
                 chart.series[0].update({
                     data: email_data
                 })
@@ -757,15 +763,15 @@ function load() {
                         [2, "asc"]
                     ],
                     columnDefs: [{
-                            orderable: false,
-                            targets: "no-sort"
-                        }, {
-                            className: "details-control",
-                            "targets": [1]
-                        }, {
-                            "visible": false,
-                            "targets": [0, 8]
-                        },
+                        orderable: false,
+                        targets: "no-sort"
+                    }, {
+                        className: "details-control",
+                        "targets": [1]
+                    }, {
+                        "visible": false,
+                        "targets": [0, 8]
+                    },
                         {
                             "render": function (data, type, row) {
                                 return createStatusLabel(data, row[8])
@@ -916,7 +922,6 @@ function refresh() {
     clearTimeout(setRefresh)
     setRefresh = setTimeout(refresh, 60000)
 };
-
 
 
 $(document).ready(function () {

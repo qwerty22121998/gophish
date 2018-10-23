@@ -79,6 +79,11 @@ var statuses = {
     "Campaign Created": {
         label: "label-success",
         icon: "fa-rocket"
+    },
+    "Attachment Clicked": {
+        color: "red",
+        label: "label-success",
+        icon: "fa-rocket"
     }
 }
 
@@ -88,6 +93,7 @@ var statsMapping = {
     "email_reported": "Email Reported",
     "clicked": "Clicked Link",
     "submitted_data": "Submitted Data",
+    "attachment_clicked": "Attachment Clicked"
 }
 
 function deleteCampaign(idx) {
